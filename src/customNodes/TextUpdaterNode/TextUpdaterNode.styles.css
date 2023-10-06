@@ -1,0 +1,18 @@
+.react-flow__node-textUpdater{
+    border-radius: 5px;
+    padding: 5px;
+    font-size: x-small;
+}
+
+.react-flow__node-textUpdater input{
+    background: rgb(144, 7, 144);
+    border: none;
+    outline: none;
+    font-size: x-small;
+    color: whitesmoke;
+}
+
+.react-flow__node-textUpdater input:focus{
+    outline: 2px grey solid;
+    border-radius: 1px;
+}

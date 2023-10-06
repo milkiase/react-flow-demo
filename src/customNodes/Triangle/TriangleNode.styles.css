@@ -1,0 +1,12 @@
+.triangle-wrapper {
+    height: 0;
+    width: 0;
+    /* border-right: 25px solid transparent; */
+    border-left: 60px solid rgb(255, 17, 17);
+    border-bottom: 30px solid transparent;
+    border-top: 30px solid transparent;
+}
+
+.selected>.triangle-wrapper {
+    border-left-color: rgb(158, 12, 12);
+}
