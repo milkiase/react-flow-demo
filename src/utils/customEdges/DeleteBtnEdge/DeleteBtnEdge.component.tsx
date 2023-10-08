@@ -1,6 +1,6 @@
 import { useCallback, MouseEvent, useState} from "react";
 import { EdgeProps, BaseEdge, getStraightPath, EdgeLabelRenderer} from "reactflow";
-import useStore from "../../store/store";
+import useStore from "../../../store/store";
 
 import './DeleteBtnEdge.styles.css'
 

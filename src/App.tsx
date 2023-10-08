@@ -1,16 +1,18 @@
-import { useCallback, useRef, useState, useMemo, MouseEvent, TouchEvent} from 'react';
+import { useCallback, useRef, useState, useMemo, MouseEvent} from 'react';
 import ReactFlow, {Node, Edge, Panel, Controls, MiniMap, OnConnectStart, OnConnectEnd, useReactFlow,
-  ConnectionLineType, SelectionMode, useStoreApi, OnConnectStartParams, OnSelectionChangeFunc, OnSelectionChangeParams
+  ConnectionLineType, SelectionMode, useStoreApi, OnSelectionChangeFunc, OnSelectionChangeParams, Background
 } from 'reactflow';
+import ExportButton from './utils/ExportBtn/ExportBtn.component';
+
 import { shallow } from 'zustand/shallow';
 import useStore, {RFState} from './store/store';
 
-import TextUpdaterNode from './customNodes/TextUpdaterNode/TextUpdaterNode.component';
-import TriangleNode from './customNodes/Triangle/TriangleNode.component';
-import DeleteBtnEdge from './customEdges/DeleteBtnEdge/DeleteBtnEdge.component';
+import TextUpdaterNode from './utils/customNodes/TextUpdaterNode/TextUpdaterNode.component';
+import TriangleNode from './utils/customNodes/Triangle/TriangleNode.component';
+import DeleteBtnEdge from './utils/customEdges/DeleteBtnEdge/DeleteBtnEdge.component';
 
-import 'reactflow/dist/style.css'
-import Modal from './components/Modal.component';
+import 'reactflow/dist/style.css';
+import Modal from './components/Modal/Modal.component';
 import { nanoid } from 'nanoid/non-secure';
 
 const nodeTypes = {
@@ -173,16 +175,19 @@ const App = ()=>{
         onConnectEnd={onConnectEnd}
         onNodeClick={onNodeClick}
         onSelectionChange={onSelectionChange}
-        fitView>
+        fitView
+        className='download-image'>
         <Panel position='top-left'> React Flow Demo </Panel>
         <Panel position='top-right' className='copy-paste-panel'>
           <button className='copy-paste-btn' onClick={cutHandler} disabled={!canCopy}>cut</button>
           <button className='copy-paste-btn' onClick={copyHandler} disabled={!canCopy}>copy</button>
           <button className='copy-paste-btn' onClick={pasteHandler} disabled={copiedSelection === null}>paste</button>
         </Panel>
+        <ExportButton></ExportButton>
         <Panel position='bottom-center'> press 'Del' to delete a selected element</Panel>
         <Controls showInteractive={false}></Controls>
         <MiniMap nodeColor={nodeColor} nodeStrokeWidth={3} zoomable pannable></MiniMap>
+        <Background ></Background>
       </ReactFlow>
     </div>
   )

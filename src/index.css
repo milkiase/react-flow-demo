@@ -14,7 +14,7 @@
   -webkit-text-size-adjust: 100%;
 }
 
-* {
+body {
   box-sizing: border-box;
 }
 
@@ -59,9 +59,19 @@
 }
 
 .copy-paste-btn {
-  padding: 8px 16px;
+  border: 2px solid rgb(6, 110, 110);
+  background: teal;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.copy-paste-btn:hover {
+  background-color: rgb(1, 93, 93);
 }
 
 .copy-paste-btn:disabled {
+  border: none;
   cursor: no-drop;
 }

@@ -1,5 +1,5 @@
 import {shallow} from 'zustand/shallow';
-import useStore from "../store/store";
+import useStore from "../../store/store";
 
 import "./Modal.styes.css";
 
