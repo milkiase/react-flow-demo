@@ -4,14 +4,20 @@ import ReactFlow, {Node, Panel, Controls, MiniMap, OnConnectStart, OnConnectEnd,
 } from 'reactflow';
 import { shallow } from 'zustand/shallow';
 import useStore, {RFState} from './store/store';
+
 import TextUpdaterNode from './customNodes/TextUpdaterNode/TextUpdaterNode.component';
 import TriangleNode from './customNodes/Triangle/TriangleNode.component';
+import DeleteBtnEdge from './customEdges/DeleteBtnEdge/DeleteBtnEdge.component';
 
 import 'reactflow/dist/style.css'
 import Modal from './components/Modal.component';
+
 const nodeTypes = {
   textUpdater: TextUpdaterNode,
   triangle: TriangleNode
+}
+const edgeTypes = {
+  deleteBtn: DeleteBtnEdge
 }
 const selector = (state:RFState)=>(
   {
@@ -30,6 +36,12 @@ type ConnectStartRef = {
   param: OnConnectStartParams,
   event?:  MouseEvent | TouchEvent
 } | null
+
+const defultEdgeOptions = {
+  type: 'deleteBtn'
+}
+
+
 function App() {
   const {
     nodes, edges, onNodesChange, onEdgesChange,
@@ -88,10 +100,11 @@ function App() {
         nodes={nodes} edges={edges} 
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        connectionLineType={ConnectionLineType.Bezier}
+        connectionLineType={ConnectionLineType.Straight}
+        defaultEdgeOptions={defultEdgeOptions}
         onConnect={onConnect}
-        defaultEdgeOptions={{animated: true}}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         selectionMode={SelectionMode.Partial}
         deleteKeyCode='Delete'
         onConnectStart={onConnectStart}

@@ -1,4 +1,4 @@
-import create from 'zustand';
+import {create} from 'zustand';
 import { Node, Edge, OnNodesChange, OnEdgesChange, OnConnect,
     applyNodeChanges, applyEdgeChanges, addEdge, Connection, EdgeChange, NodeChange, XYPosition
 } from 'reactflow';
@@ -14,7 +14,8 @@ export type RFState = {
     showModal: boolean,
     setShowModal: (bool: boolean)=> void,
     modalInfo: string,
-    setModalInfo: (info: string)=> void
+    setModalInfo: (info: string)=> void,
+    deleteEdge: (id: string) => void,
 }
 
 const useStore = create<RFState>((set, get) => ({
@@ -55,8 +56,10 @@ const useStore = create<RFState>((set, get) => ({
     ],
     edges: [
         {id: 'e1-2', source: '1', target: '2'},
-        {id: 'e2-3', source: '2', target: '3', animated: true}
-      ],
+        {id: 'e2-3', source: '2', target: '3', animated: true},
+        {id: 'e3-5b', source: '3', target: '5', sourceHandle: 'b'},
+        {id: 'e3-5a', source: '3', target: '5', sourceHandle: 'a', animated: true},
+    ],
     onNodesChange: (changes:NodeChange[]) => {set({
         nodes: applyNodeChanges(changes, get().nodes)
     })},
@@ -85,7 +88,7 @@ const useStore = create<RFState>((set, get) => ({
         const newEdge:Edge = {
             id: nanoid(),
             target: newNode.id,
-            source: source.id
+            source: source.id,
         }
         set({
             nodes: get().nodes.concat(newNode),
@@ -96,6 +99,7 @@ const useStore = create<RFState>((set, get) => ({
     setShowModal: (bool)=> set({showModal: bool}),
     modalInfo: '',
     setModalInfo: (info)=> set({modalInfo: info}),
+    deleteEdge: (id) => set({edges: get().edges.filter((edge) => edge.id != id)})
 }))
 
 export default useStore;
