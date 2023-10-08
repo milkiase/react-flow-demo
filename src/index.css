@@ -51,3 +51,17 @@
   height: 60px;
   cursor: pointer;
 }
+
+.copy-paste-panel {
+  display: flex;
+  justify-content: center;
+  column-gap: 8px;
+}
+
+.copy-paste-btn {
+  padding: 8px 16px;
+}
+
+.copy-paste-btn:disabled {
+  cursor: no-drop;
+}
