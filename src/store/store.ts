@@ -1,4 +1,5 @@
 import {create} from 'zustand';
+import { persist } from 'zustand/middleware';
 import { Node, Edge, OnNodesChange, OnEdgesChange, OnConnect,
     applyNodeChanges, applyEdgeChanges, addEdge, Connection, EdgeChange, NodeChange, XYPosition
 } from 'reactflow';
@@ -18,7 +19,7 @@ export type RFState = {
     deleteEdge: (id: string) => void,
 }
 
-const useStore = create<RFState>((set, get) => ({
+const useStore = create<RFState>()(persist((set, get) => ({
     nodes: [
         {
             id: '1', type: 'input', 
@@ -92,7 +93,7 @@ const useStore = create<RFState>((set, get) => ({
         }
         set({
             nodes: get().nodes.concat(newNode),
-            edges: get().edges.concat(newEdge)
+            edges: newNode.type != 'input' ? get().edges.concat(newEdge) : get().edges
         })
     },
     showModal: false,
@@ -100,6 +101,6 @@ const useStore = create<RFState>((set, get) => ({
     modalInfo: '',
     setModalInfo: (info)=> set({modalInfo: info}),
     deleteEdge: (id) => set({edges: get().edges.filter((edge) => edge.id != id)})
-}))
+}), {name: 'rfStore' }))
 
 export default useStore;

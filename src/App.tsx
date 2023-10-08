@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState, useMemo, MouseEvent, TouchEvent, memo} from 'react';
+import { useCallback, useRef, useState, useMemo, MouseEvent, TouchEvent} from 'react';
 import ReactFlow, {Node, Edge, Panel, Controls, MiniMap, OnConnectStart, OnConnectEnd, useReactFlow,
   ConnectionLineType, SelectionMode, useStoreApi, OnConnectStartParams, OnSelectionChangeFunc, OnSelectionChangeParams
 } from 'reactflow';
@@ -33,17 +33,13 @@ const selector = (state:RFState)=>(
     setModalInfo: state.setModalInfo
   }
 )
-type ConnectStartRef = {
-  param: OnConnectStartParams,
-  event?:  MouseEvent | TouchEvent
-} | null
 
 const defultEdgeOptions = {
   type: 'deleteBtn'
 }
 
 
-const App = memo(()=>{
+const App = ()=>{
   const reactFlowInstance = useReactFlow()
   const {
     nodes, edges, onNodesChange, onEdgesChange,
@@ -55,7 +51,7 @@ const App = memo(()=>{
 
   const canCopy = useMemo(():boolean=> selection.nodes.length > 0, [selection])
   const store = useStoreApi()
-  const connectStartRef = useRef<ConnectStartRef>(null)
+  const connectStartRef = useRef<string | null>(null)
   const nodeColor = (node: Node):string=>{
     switch(node.type){
       case('input'):
@@ -70,24 +66,28 @@ const App = memo(()=>{
         return 'grey'
     }
   }
-  const onConnectStart: OnConnectStart = (event, param)=>{
-    connectStartRef.current = {event: event, param}
+  const onConnectStart: OnConnectStart = (_, {nodeId})=>{
+    connectStartRef.current = nodeId
   }
   const onConnectEnd:OnConnectEnd = useCallback((event)=>{
     const classList = (event.target as Element).classList
+    const {clientX, clientY} = event as unknown as MouseEvent
     if(connectStartRef.current !== null && classList.contains('react-flow__pane')){
-      const state = store.getState()
-      const sourceNode:Node = (state.getNodes().find((node)=> node.id == connectStartRef.current?.param.nodeId)) as Node
-      const sourceEventPosition = {clientX: (connectStartRef.current?.event as MouseEvent)?.clientX,
-        clientY: (connectStartRef.current?.event as MouseEvent)?.clientY,
-      }
-      const differenceY = ((sourceEventPosition.clientY as number) - (event as unknown as MouseEvent).clientY)
-      const differenceX = ((sourceEventPosition.clientX as number) - (event as unknown as MouseEvent).clientX)
+      const sourceNode:Node = (nodes.find((node)=> node.id == connectStartRef.current)) as Node
+      const {domNode} = store.getState()
 
-      addNode(sourceNode, {x: sourceNode.position.x - differenceX, y: sourceNode.position.y - differenceY})
+      if(!domNode) return
+      
+      const{left, top} = domNode.getBoundingClientRect()
+      const zoom = reactFlowInstance.getZoom()
+      const panePosition = reactFlowInstance.project({
+        x: (clientX - left - (sourceNode.width as number)/2 * zoom), 
+        y: (clientY - top - (sourceNode.height as number)/ 2 * zoom)
+      })
+      addNode(sourceNode, panePosition)
       connectStartRef.current = null
     }
-  }, [])
+  }, [nodes, reactFlowInstance, store])
 
   const onNodeClick = useCallback((_: MouseEvent, node: Node)=>{
     const type = node.type
@@ -186,6 +186,6 @@ const App = memo(()=>{
       </ReactFlow>
     </div>
   )
-})
+}
 
 export default App
