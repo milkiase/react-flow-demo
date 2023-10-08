@@ -178,7 +178,7 @@ const App = memo(()=>{
         <Panel position='top-right' className='copy-paste-panel'>
           <button className='copy-paste-btn' onClick={cutHandler} disabled={!canCopy}>cut</button>
           <button className='copy-paste-btn' onClick={copyHandler} disabled={!canCopy}>copy</button>
-          <button className='copy-paste-btn' onClick={pasteHandler} >paste</button>
+          <button className='copy-paste-btn' onClick={pasteHandler} disabled={copiedSelection === null}>paste</button>
         </Panel>
         <Panel position='bottom-center'> press 'Del' to delete a selected element</Panel>
         <Controls showInteractive={false}></Controls>
