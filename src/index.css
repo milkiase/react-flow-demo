@@ -54,24 +54,45 @@ body {
 
 .copy-paste-panel {
   display: flex;
-  justify-content: center;
-  column-gap: 8px;
+  justify-content: start;
+  gap: 6px;
+  flex-wrap: wrap;
+  width: 200px;
 }
 
 .copy-paste-btn {
   border: 2px solid rgb(6, 110, 110);
   background: teal;
-  padding: 10px 20px;
+  padding: 3px 5px;
   border-radius: 5px;
   font-weight: 700;
+  font-size: x-small;
   cursor: pointer;
+  opacity: 0.9;
+  display: flex;
+  column-gap: 5px;
+  justify-self: start;
+  align-items: center;
+  max-width: 60px;
+  height: 25px;
 }
 
 .copy-paste-btn:hover {
   background-color: rgb(1, 93, 93);
+  opacity: 1;
+}
+
+.copy-paste-btn:focus-within {
+  background-color: rgb(6, 110, 110);
 }
 
 .copy-paste-btn:disabled {
-  border: none;
+  border-color: transparent;
   cursor: no-drop;
+  opacity: 0.6;
+  background-color: rgb(39, 70, 70);
+}
+
+.icon {
+  width: 15px;
 }

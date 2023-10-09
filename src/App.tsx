@@ -1,11 +1,17 @@
 import { useCallback, useRef, useState, useMemo, MouseEvent} from 'react';
-import ReactFlow, {Node, Edge, Panel, Controls, MiniMap, OnConnectStart, OnConnectEnd, useReactFlow,
-  ConnectionLineType, SelectionMode, useStoreApi, OnSelectionChangeFunc, OnSelectionChangeParams, Background
+import ReactFlow, {Node, Edge, Panel, Controls, 
+  MiniMap, OnConnectStart, OnConnectEnd, useReactFlow,
+  ConnectionLineType, SelectionMode, useStoreApi, 
+  OnSelectionChangeFunc, OnSelectionChangeParams, 
+  Background
 } from 'reactflow';
+import type {TemporalState} from 'zundo';
+import {useStore} from 'zustand';
+
 import ExportButton from './utils/ExportBtn/ExportBtn.component';
 
 import { shallow } from 'zustand/shallow';
-import useStore, {RFState} from './store/store';
+import useFlowStore, {RFState} from './store/store';
 
 import TextUpdaterNode from './utils/customNodes/TextUpdaterNode/TextUpdaterNode.component';
 import TriangleNode from './utils/customNodes/Triangle/TriangleNode.component';
@@ -40,13 +46,19 @@ const defultEdgeOptions = {
   type: 'deleteBtn'
 }
 
+// converting the zundo store to a React hook using create from zustand
+const useTemporalStore = <T,>(
+  selector: (state: TemporalState<RFState>) => T,
+  equality?: (a: T, b: T) => boolean,
+) => useStore(useFlowStore.temporal, selector, equality);
 
 const App = ()=>{
   const reactFlowInstance = useReactFlow()
+  const {undo, redo, futureStates, pastStates, clear} = useTemporalStore(state => state)
   const {
     nodes, edges, onNodesChange, onEdgesChange,
     onConnect, addNode, showModal, setShowModal, setModalInfo
-  } = useStore(selector, shallow);
+  } = useFlowStore(selector, shallow);
 
   const [selection, setSelection] = useState({nodes: [], edges: []} as OnSelectionChangeParams)
   const [copiedSelection, setCopiedSelection] = useState<OnSelectionChangeParams | null>(null)
@@ -77,7 +89,6 @@ const App = ()=>{
     if(connectStartRef.current !== null && classList.contains('react-flow__pane')){
       const sourceNode:Node = (nodes.find((node)=> node.id == connectStartRef.current)) as Node
       const {domNode} = store.getState()
-
       if(!domNode) return
       
       const{left, top} = domNode.getBoundingClientRect()
@@ -175,13 +186,16 @@ const App = ()=>{
         onConnectEnd={onConnectEnd}
         onNodeClick={onNodeClick}
         onSelectionChange={onSelectionChange}
-        fitView
-        className='download-image'>
-        <Panel position='top-left'> React Flow Demo </Panel>
-        <Panel position='top-right' className='copy-paste-panel'>
-          <button className='copy-paste-btn' onClick={cutHandler} disabled={!canCopy}>cut</button>
-          <button className='copy-paste-btn' onClick={copyHandler} disabled={!canCopy}>copy</button>
-          <button className='copy-paste-btn' onClick={pasteHandler} disabled={copiedSelection === null}>paste</button>
+        fitView>
+        <Panel position='top-left' className='copy-paste-panel'>
+          <button className='copy-paste-btn' onClick={cutHandler} disabled={!canCopy}><img className='icon' src="src\assets\Cut.png" alt=""/> cut</button>
+          <button className='copy-paste-btn' onClick={copyHandler} disabled={!canCopy}> <img className='icon' src="src\assets\Copy.png" alt=""/>copy</button>
+          <button className='copy-paste-btn' onClick={pasteHandler} disabled={copiedSelection === null}> <img className='icon' src="src\assets\Paste.png" alt=""/> paste</button>
+
+          <button className='copy-paste-btn' disabled={(pastStates.length === 0)} onClick={()=>undo()}> <img className='icon' src="src\assets\Undo.png" alt=""/> </button>
+          <button className='copy-paste-btn' disabled={(futureStates.length === 0)} onClick={()=>redo()}> <img className='icon' src="src\assets\Redo.png" alt=""/> </button>
+          <button className='copy-paste-btn' onClick={()=>clear()}>  clear</button>
+
         </Panel>
         <ExportButton></ExportButton>
         <Panel position='bottom-center'> press 'Del' to delete a selected element</Panel>

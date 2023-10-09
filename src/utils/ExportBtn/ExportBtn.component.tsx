@@ -3,10 +3,10 @@ import { toPng } from 'html-to-image';
 
 import './ExportBtn.styles.css';
 
-function downloadImage(dataUrl:string) {
+function exportImage(dataUrl:string) {
     const a = document.createElement('a');
-
-    a.setAttribute('e', 'reactflow.png');
+    
+    a.setAttribute('download', 'reactflow.png');
     a.setAttribute('href', dataUrl);
     a.click();
 }
@@ -32,13 +32,14 @@ function ExportButton() {
         height: imageHeight.toString(),
         transform: `translate(${transform[0]}px, ${transform[1]}px) scale(${transform[2]})`,
       },
-    }).then(downloadImage);
+    }).then(exportImage);
   };
 
   return (
-    <Panel position="top-center">
-      <button className="export-btn" onClick={onClick}>
-        Export Image
+    <Panel position="top-right">
+      <button className="export-btn " onClick={onClick}>
+      <img className='icon' src="src\assets\Download.png" alt=""/>
+        Save Image
       </button>
     </Panel>
   );

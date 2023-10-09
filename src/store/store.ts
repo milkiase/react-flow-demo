@@ -1,9 +1,10 @@
 import {create} from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist} from 'zustand/middleware';
 import { Node, Edge, OnNodesChange, OnEdgesChange, OnConnect,
     applyNodeChanges, applyEdgeChanges, addEdge, Connection, EdgeChange, NodeChange, XYPosition
 } from 'reactflow';
 import { nanoid } from 'nanoid/non-secure';
+import { temporal } from 'zundo';
 
 export type RFState = {
     nodes: Node[],
@@ -19,7 +20,7 @@ export type RFState = {
     deleteEdge: (id: string) => void,
 }
 
-const useStore = create<RFState>()(persist((set, get) => ({
+const useFlowStore = create<RFState>()(persist(temporal((set, get) => ({
     nodes: [
         {
             id: '1', type: 'input', 
@@ -38,7 +39,7 @@ const useStore = create<RFState>()(persist((set, get) => ({
         {
             id: '3', type: 'textUpdater', 
             position: {x: 100, y: 200}, 
-            data: {label: 'Custom Node'}, 
+            data: {label: 'React Flow Demo'}, 
             style: {backgroundColor: 'purple', color: 'wheat'}
         },
         {
@@ -101,6 +102,6 @@ const useStore = create<RFState>()(persist((set, get) => ({
     modalInfo: '',
     setModalInfo: (info)=> set({modalInfo: info}),
     deleteEdge: (id) => set({edges: get().edges.filter((edge) => edge.id != id)})
-}), {name: 'rfStore' }))
+})), {name: 'flowStore'}))
 
-export default useStore;
+export default useFlowStore;
