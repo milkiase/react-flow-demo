@@ -38,7 +38,7 @@ function ExportButton() {
   return (
     <Panel position="top-right">
       <button className="export-btn " onClick={onClick}>
-      <img className='icon' src="src/assets/Download.png" alt=""/>
+      <img className='icon' src="https://i.imgur.com/bhemA9I.png" alt=""/>
         Save Image
       </button>
     </Panel>

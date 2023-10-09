@@ -187,12 +187,12 @@ const App = ()=>{
         onSelectionChange={onSelectionChange}
         fitView>
         <Panel position='top-left' className='copy-paste-panel'>
-          <button className='copy-paste-btn' onClick={cutHandler} disabled={!canCopy}><img className='icon' src="src/assets/Cut.png" alt=""/> cut</button>
-          <button className='copy-paste-btn' onClick={copyHandler} disabled={!canCopy}> <img className='icon' src="src/assets/Copy.png" alt=""/>copy</button>
-          <button className='copy-paste-btn' onClick={pasteHandler} disabled={copiedSelection === null}> <img className='icon' src="src/assets/Paste.png" alt=""/> paste</button>
+          <button className='copy-paste-btn' onClick={cutHandler} disabled={!canCopy}><img className='icon' src="https://i.imgur.com/CvLdD7J.png" alt=""/> cut</button>
+          <button className='copy-paste-btn' onClick={copyHandler} disabled={!canCopy}> <img className='icon' src="https://i.imgur.com/JHNTuh9.png" alt=""/>copy</button>
+          <button className='copy-paste-btn' onClick={pasteHandler} disabled={copiedSelection === null}> <img className='icon' src="https://i.imgur.com/7zFX2N5.png" alt=""/> paste</button>
 
-          <button className='copy-paste-btn' disabled={(pastStates.length === 0)} onClick={()=>undo()}> <img className='icon' src="src/assets/Undo.png" alt=""/> </button>
-          <button className='copy-paste-btn' disabled={(futureStates.length === 0)} onClick={()=>redo()}> <img className='icon' src="src/assets/Redo.png" alt=""/> </button>
+          <button className='copy-paste-btn' disabled={(pastStates.length === 0)} onClick={()=>undo()}> <img className='icon' src="https://i.imgur.com/T9yFdmL.png" alt=""/> </button>
+          <button className='copy-paste-btn' disabled={(futureStates.length === 0)} onClick={()=>redo()}> <img className='icon' src="https://i.imgur.com/Qki3Jyw.png" alt=""/> </button>
           <button className='copy-paste-btn' onClick={()=>clear()}>  clear</button>
 
         </Panel>
