@@ -6,7 +6,7 @@ import './ExportBtn.styles.css';
 function exportImage(dataUrl:string) {
     const a = document.createElement('a');
     
-    a.setAttribute('download', 'reactflow.png');
+    a.setAttribute('download', 'reactflow-demo.png');
     a.setAttribute('href', dataUrl);
     a.click();
 }
@@ -38,7 +38,7 @@ function ExportButton() {
   return (
     <Panel position="top-right">
       <button className="export-btn " onClick={onClick}>
-      <img className='icon' src="src\assets\Download.png" alt=""/>
+      <img className='icon' src="src/assets/Download.png" alt=""/>
         Save Image
       </button>
     </Panel>

@@ -116,7 +116,6 @@ const App = ()=>{
   const onSelectionChange:OnSelectionChangeFunc = useCallback((params)=>{
     setSelection(params)
   }, [])
-
   const cutHandler = useCallback(()=>{
     setCopiedSelection(selection)
     reactFlowInstance.deleteElements(selection)
@@ -167,7 +166,7 @@ const App = ()=>{
     reactFlowInstance.setNodes(nodes.concat(copiedSelection?.nodes as Node[]))
     reactFlowInstance.setEdges(edges.concat(copiedSelection?.edges as Edge[]))
   }, [copiedSelection, edges, nodes, reactFlowInstance])
-
+  
   return (
     <div className='flowWrapper'>
       {showModal && <Modal></Modal>}
@@ -188,12 +187,12 @@ const App = ()=>{
         onSelectionChange={onSelectionChange}
         fitView>
         <Panel position='top-left' className='copy-paste-panel'>
-          <button className='copy-paste-btn' onClick={cutHandler} disabled={!canCopy}><img className='icon' src="src\assets\Cut.png" alt=""/> cut</button>
-          <button className='copy-paste-btn' onClick={copyHandler} disabled={!canCopy}> <img className='icon' src="src\assets\Copy.png" alt=""/>copy</button>
-          <button className='copy-paste-btn' onClick={pasteHandler} disabled={copiedSelection === null}> <img className='icon' src="src\assets\Paste.png" alt=""/> paste</button>
+          <button className='copy-paste-btn' onClick={cutHandler} disabled={!canCopy}><img className='icon' src="src/assets/Cut.png" alt=""/> cut</button>
+          <button className='copy-paste-btn' onClick={copyHandler} disabled={!canCopy}> <img className='icon' src="src/assets/Copy.png" alt=""/>copy</button>
+          <button className='copy-paste-btn' onClick={pasteHandler} disabled={copiedSelection === null}> <img className='icon' src="src/assets/Paste.png" alt=""/> paste</button>
 
-          <button className='copy-paste-btn' disabled={(pastStates.length === 0)} onClick={()=>undo()}> <img className='icon' src="src\assets\Undo.png" alt=""/> </button>
-          <button className='copy-paste-btn' disabled={(futureStates.length === 0)} onClick={()=>redo()}> <img className='icon' src="src\assets\Redo.png" alt=""/> </button>
+          <button className='copy-paste-btn' disabled={(pastStates.length === 0)} onClick={()=>undo()}> <img className='icon' src="src/assets/Undo.png" alt=""/> </button>
+          <button className='copy-paste-btn' disabled={(futureStates.length === 0)} onClick={()=>redo()}> <img className='icon' src="src/assets/Redo.png" alt=""/> </button>
           <button className='copy-paste-btn' onClick={()=>clear()}>  clear</button>
 
         </Panel>

@@ -71,9 +71,14 @@ const useFlowStore = create<RFState>()(persist(temporal((set, get) => ({
         })
     },
     onConnect: (params:Connection) => {
-        set({
-            edges: addEdge(params, get().edges)
-        })
+        //check if a node is connecting to itself
+        if(params.source === params.target){
+            alert('cannot connect a node to itself')
+        }else{
+            set({
+                edges: addEdge(params, get().edges)
+            })
+        }
     },
     addNode: (source, position)=>{
         const newNode:Node = {
